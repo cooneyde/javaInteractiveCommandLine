@@ -62,8 +62,11 @@ public class MainApp {
                     dbService.insertServers(serverList);
 
                 }
-            } else if (option.equalsIgnoreCase("deleteServer")) {
-                // TODO implement...
+            } else if (option.contains("deleteServer")) {
+
+                String[] serverID = option.split(" ");  //split string by single space to obtain ID arg
+                dbService.deleteServer(serverID[1]);
+
             } else if (option.equalsIgnoreCase("editServer")) {
                 // TODO implement...
             } else if (option.equalsIgnoreCase("listServers")) {
@@ -88,8 +91,6 @@ public class MainApp {
                         " editServer \n" +
                         " listServers \n" +
                         "%n", option);
-
-
             }
         }
     }

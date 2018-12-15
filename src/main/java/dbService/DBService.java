@@ -143,9 +143,8 @@ public class DBService {
     /**
      * insert multiple Servers
      */
-    public void insertServers(List<Server> list) {
-        String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) "
-                + "VALUES(?,?, ?)";
+    public void insertServers(List<Server> list) throws SQLException {
+        String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) VALUES(?,?, ?)";
 
         DBConnection dbConnection = new DBConnection();
 
@@ -172,6 +171,49 @@ public class DBService {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+
+
+            if (dbConnection != null) {
+                conn.close();
+            }
+        }
+    }
+
+
+    /**
+     * Deletes a server given an ID
+     *
+     * @param id {String}   Contains the id of the server to delete
+     */
+    public void deleteServer(String id) throws SQLException {
+        String sql = "DELETE FROM test WHERE id = ?";
+        DBConnection dbConnection = new DBConnection();
+
+        Connection conn = dbConnection.createConnection();
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, id);
+            int result_set = statement.executeUpdate();
+
+            if(result_set > 0) {
+                System.out.println("Deletion Successful");
+
+            } else {
+                System.out.println("Deletion failed: ID not found");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+
+
+            if (dbConnection != null) {
+                conn.close();
+            }
         }
     }
 }
