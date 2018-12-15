@@ -1,12 +1,12 @@
 <servers>
     <server>
-        <id>100</id>
-        <name>MyServerName</name>
+        <id>500</id>
+        <name>MyServerNamesomeone</name>
         <description>This is a few words about the server</description>
     </server>
 
     <server>
-        <id>101</id>
+        <id>200</id>
         <name>MyServerName2</name>
         <description>This is a few words about the server2</description>
     </server>

@@ -13,7 +13,7 @@ public class DBConnectionTest {
     @InjectMocks private DBConnection dbConnection = new DBConnection();
 
     @Test
-    public void testCreateConnection() throws Exception {
+    public void testCreateConnection() {
 
 
         Connection value = dbConnection.createConnection();

@@ -60,10 +60,8 @@ public class FileReader {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            return serverList;
         }
-
+        return serverList;
     }
 
 
@@ -81,9 +79,12 @@ public class FileReader {
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        } finally {
-            return document;
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return document;
     }
 
 
@@ -92,7 +93,7 @@ public class FileReader {
      * @param xml   Input xml file containing server objects numbering 1:N
      * @param xsd   Validation file for the xml
      */
-    public static void validate(File xml, InputStream xsd) {
+    private static void validate(File xml, InputStream xsd) {
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(xsd));
