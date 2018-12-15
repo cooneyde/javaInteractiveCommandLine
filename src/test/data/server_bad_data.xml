@@ -1,0 +1,13 @@
+<servers>
+    <server>
+        <id>500</id>
+        <name>MyServerNamesomeone</name>
+        <description>This is a few words about the server</description>
+    </server>
+
+    <server>
+        <id>200</id>
+        <namue>MyServerName2</namue>
+        <description>This is a few words about the server2</description>
+    </server>
+</servers>
