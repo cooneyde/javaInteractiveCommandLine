@@ -57,8 +57,7 @@ public class MainApp {
                     System.out.println("Provide the file path to the xml file (ensure keys in the xml are named id, name and description");
                     String path = reader.readLine();
                     FileReader fileReader = new FileReader();
-                    List<Server> serverList = null;
-                    serverList = fileReader.readServerFile(path);
+                    List<Server> serverList = fileReader.readServerFile(path);
                     dbService.insertServers(serverList);
 
                 }
