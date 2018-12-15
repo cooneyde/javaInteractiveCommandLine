@@ -1,11 +1,13 @@
 import dbService.DBService;
 import fileReader.FileReader;
 import model.Server;
+import propertiesLoader.PropertiesLoader;
 
 import java.lang.*;
 import java.sql.*;
 import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 class MainApp {
 
@@ -13,19 +15,21 @@ class MainApp {
         boolean running = true;
 
         showHelp();
+        Properties properties = new PropertiesLoader("src/main/resources/db.properties").getProperties();
+        DBService dbService = new DBService(properties);
+
 
         while (running) {
-
 
             InputStreamReader inputStreamReader = new InputStreamReader(System.in);
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String option = reader.readLine();
 
-            DBService dbService = new DBService();
             if (option.equals("help")) {
                 showHelp();
 
             } else if (option.equals("quit")) {
+
                 running = false;
             } else if (option.equalsIgnoreCase("countServers")) {
 

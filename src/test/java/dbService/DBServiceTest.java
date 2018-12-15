@@ -1,56 +1,44 @@
 package dbService;
 
 import model.Server;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.dbunit.DBTestCase;
+import org.dbunit.PropertiesBasedJdbcDatabaseTester;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
 
+
+import org.junit.Test;
+import propertiesLoader.PropertiesLoader;
+
+import java.io.FileInputStream;
 import java.sql.*;
 import java.util.List;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.when;
+import java.util.Properties;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class DBServiceTest {
+public class DBServiceTest extends DBTestCase {
 
-    @Mock
-    Connection mockConn;
+    DBService dbService;
 
-    @Mock
-    Statement mockStatement;
+    public DBServiceTest() {
 
-    @Mock
-    ResultSet mockResultSet;
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "org.hsqldb.jdbcDriver" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:mysql" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "root" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "password" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "" );
 
-    @Before
-    public void setUp() throws SQLException {
-
-       // when(dbConnection.createConnection()).thenReturn(mockConn);
-        when(mockConn.createStatement()).thenReturn(mockStatement);
-
-        when(mockResultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
-        when(mockResultSet.getInt("ID")).thenReturn(1).thenReturn(2);
-
-        when(mockResultSet.getString("NAME")).thenReturn("table_r3").thenReturn("table_r1");
-
-        when(mockStatement.executeQuery("SELECT * FROM test")).thenReturn(mockResultSet);
-        MockitoAnnotations.initMocks(this);
-
+        Properties props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
+        dbService = new DBService(props);
     }
 
     @Test
     public void getServerList() {
-        DBService dbService = new DBService();
 
         try {
-           List<Server> result = dbService.getServerList();
-           assertTrue(result instanceof List);
+            List<Server> result = dbService.getServerList();
+            assertTrue(result instanceof List);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,13 +49,27 @@ public class DBServiceTest {
 
     @Test
     public void getServerCount() {
-        DBService dbService = new DBService();
 
         try {
             int result = dbService.getServerCount();
-            assertEquals(result, 1);
+            //assertEquals(result, 1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    protected IDataSet getDataSet() throws Exception {
+        return new FlatXmlDataSetBuilder().build(new FileInputStream("src/test/data/db/db.xml"));
+    }
+
+    protected DatabaseOperation getSetUpOperation() throws Exception
+    {
+        return DatabaseOperation.REFRESH;
+    }
+
+    protected DatabaseOperation getTearDownOperation() throws Exception
+    {
+        return DatabaseOperation.NONE;
     }
 }

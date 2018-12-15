@@ -3,21 +3,22 @@ package dbService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnection {
 
-    private final String url;
-    private final String dbName;
-    private final String driver;
-    private final String userName;
-    private final String password;
+    private String url;
+    private String driver;
+    private String userName;
+    private String password;
 
-    public DBConnection() {
-        this.url = "jdbc:mysql://localhost:3306/mysql?useSSL=false";
-        this.dbName = "mysql";
-        this.driver = "com.mysql.cj.jdbc.Driver";
-        this.userName = "root";
-        this.password = "password";
+
+    public DBConnection(Properties prop) {
+
+        this.url = prop.getProperty("url");
+        this.driver = prop.getProperty("driver");
+        this.userName = prop.getProperty("userName");
+        this.password = prop.getProperty("password");
     }
 
 

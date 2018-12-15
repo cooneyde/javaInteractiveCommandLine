@@ -3,11 +3,18 @@ package dbService;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import model.Server;
 
 public class DBService {
 
+    private DBConnection dbConnection;
+
+    public DBService(Properties props) {
+
+        dbConnection = new DBConnection(props);
+    }
 
     /**
      * Retrieves a list of servers from the database
@@ -18,8 +25,6 @@ public class DBService {
 
         Statement statement = null;
         List<Server> servers = new ArrayList<Server>();
-
-        DBConnection dbConnection = new DBConnection();
 
         Connection conn = dbConnection.createConnection();
         String selectTableSQL = "SELECT * FROM test";
@@ -64,11 +69,8 @@ public class DBService {
         Statement statement = null;
         int count = -1;
 
-        DBConnection dbConnection = new DBConnection();
-
         Connection conn = dbConnection.createConnection();
         String selectTableSQL = "SELECT COUNT(1) FROM test";
-
 
         try {
             statement = conn.createStatement();
@@ -92,12 +94,15 @@ public class DBService {
     }
 
 
+    /**
+     * Inserts a new Server into the server table
+     * @param server        {Server} Server object containing ID and either or both name and description
+     * @throws SQLException Thrown when a connection cannot be closed
+     */
     public void insertServer(Server server) throws SQLException {
         String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) VALUES(?,?,?)";
 
         int result = 0;
-
-        DBConnection dbConnection = new DBConnection();
 
         Connection conn = dbConnection.createConnection();
         PreparedStatement statement;
@@ -120,7 +125,6 @@ public class DBService {
                 System.out.println("Insert failed");
             }
 
-
             conn.close();
 
         }
@@ -129,11 +133,11 @@ public class DBService {
 
     /**
      * insert multiple Servers
+     * @param list            {List<Server>}    A list of Server objects
+     * @throws SQLException Thrown when a connection cannot be closed
      */
     public void insertServers(List<Server> list) throws SQLException {
         String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) VALUES(?,?, ?)";
-
-        DBConnection dbConnection = new DBConnection();
 
         Connection conn = dbConnection.createConnection();
         PreparedStatement statement;
@@ -178,7 +182,6 @@ public class DBService {
     public void deleteServer(String id) throws SQLException {
 
         String sql = "DELETE FROM test WHERE id = ?";
-        DBConnection dbConnection = new DBConnection();
 
         Connection conn = dbConnection.createConnection();
         PreparedStatement statement;
@@ -207,8 +210,12 @@ public class DBService {
     }
 
 
+    /**
+     * Updates an existing server row with new data
+     * @param server           {Server} Object containing id of the server, and name/description (or both)
+     * @throws SQLException
+     */
     public void updateServer(Server server) throws SQLException {
-        DBConnection dbConnection = new DBConnection();
 
         Connection conn = dbConnection.createConnection();
         Statement statement;

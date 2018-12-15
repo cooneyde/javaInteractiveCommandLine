@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<database name="mysql">
+	<table_structure name="test">
+		<field Field="ID" Type="char(128)" Null="NO" Key="PRI" Extra="" Comment="" />
+		<field Field="NAME" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="DESCRIPTION" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<key Table="test" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="ID" Collation="A" Cardinality="6" Null="" Index_type="BTREE" Comment="" Index_comment="" Visible="YES" />
+		<options Name="test" Engine="InnoDB" Version="10" Row_format="Dynamic" Rows="7" Avg_row_length="2340" Data_length="16384" Max_data_length="0" Index_length="0" Data_free="0" Create_time="2018-12-15 10:48:03" Update_time="2018-12-15 22:08:06" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="test">
+	<row>
+		<field name="ID">1</field>
+		<field name="NAME">abc123</field>
+		<field name="DESCRIPTION">another day another dollar</field>
+	</row>
+	<row>
+		<field name="ID">100</field>
+		<field name="NAME">MyServerName</field>
+		<field name="DESCRIPTION">This is a few words about the server</field>
+	</row>
+	<row>
+		<field name="ID">101</field>
+		<field name="NAME">MyServerName2</field>
+		<field name="DESCRIPTION">This is a few words about the server2</field>
+	</row>
+	<row>
+		<field name="ID">12</field>
+		<field name="NAME">Demrot server</field>
+		<field name="DESCRIPTION">dun dun deh dun deh dun</field>
+	</row>
+	<row>
+		<field name="ID">200</field>
+		<field name="NAME">MyServerName2</field>
+		<field name="DESCRIPTION">This is a few words about the server2</field>
+	</row>
+	<row>
+		<field name="ID">5</field>
+		<field name="NAME">abc</field>
+		<field name="DESCRIPTION">someone somehwere is wathcing me</field>
+	</row>
+	<row>
+		<field name="ID">500</field>
+		<field name="NAME">MyServerNamesomeone</field>
+		<field name="DESCRIPTION">This is a few words about the server</field>
+	</row>
+	</table_data>
+</database>
