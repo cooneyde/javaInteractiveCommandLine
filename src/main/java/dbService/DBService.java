@@ -56,23 +56,45 @@ public class DBService {
             }
             return servers;
         }
-
     }
 
 
-    public void verifyConnection(Connection connection) {
-        ResultSet resultSet = null;
-        try {
-            resultSet = connection.getMetaData().getCatalogs();
+    /**
+     * Retrieves a count of the number of rows in the server table
+     * @return {int}    A count of servers
+     * @throws SQLException
+     */
+    public int getServerCount() throws SQLException {
+        Statement statement = null;
+        int count = -1;
 
-            //iterate each catalog in the ResultSet
-            while (resultSet.next()) {
-                // Get the database name, which is at position 1
-                String databaseName = resultSet.getString(1);
-            }
-            resultSet.close();
+        DBConnection dbConnection = new DBConnection();
+
+        Connection conn = dbConnection.createConnection();
+        String selectTableSQL = "SELECT COUNT(1) FROM test";
+
+
+        try {
+            statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(selectTableSQL);
+
+            count = rs.last() ? rs.getInt(1) : 0;
+            rs.close();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (statement != null) {
+                statement.close();
+            }
+
+            if (dbConnection != null) {
+                conn.close();
+            }
+            return count;
         }
 
     }
