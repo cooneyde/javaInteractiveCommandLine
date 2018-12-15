@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.sql.*;
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -56,7 +57,6 @@ public class DBServiceTest {
 
         try {
            List<Server> result = dbService.getServerList();
-           System.out.println(result.get(0).name);
            assertTrue(result instanceof List);
 
         } catch (SQLException e) {
@@ -66,4 +66,15 @@ public class DBServiceTest {
     }
 
 
+    @Test
+    public void getServerCount() {
+        DBService dbService = new DBService();
+
+        try {
+            int result = dbService.getServerCount();
+            assertEquals(result, 1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
