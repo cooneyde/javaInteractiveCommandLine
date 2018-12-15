@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -60,6 +61,8 @@ public class FileReader {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SAXException e) {
+            System.out.println(e);
         }
         return serverList;
     }
@@ -70,7 +73,7 @@ public class FileReader {
      * @param file  {File}  Input File Object
      * @return      {Document}
      */
-    private Document documentParser(File file) {
+    private Document documentParser(File file) throws SAXException {
         Document document = null;
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -78,8 +81,6 @@ public class FileReader {
             document = documentBuilder.parse(file);
 
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,18 +94,12 @@ public class FileReader {
      * @param xml   Input xml file containing server objects numbering 1:N
      * @param xsd   Validation file for the xml
      */
-    private static void validate(File xml, InputStream xsd) {
-        try {
+    public static void validate(File xml, InputStream xsd) throws SAXException, IOException {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(xsd));
             Validator validator = schema.newValidator();
             StreamSource xmlFile = new StreamSource(xml);
             validator.validate(xmlFile);
 
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
