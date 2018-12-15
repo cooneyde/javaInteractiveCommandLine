@@ -14,6 +14,7 @@ public class DBService {
 
     /**
      * Retrieves a list of servers from the database
+     *
      * @throws SQLException
      */
     public List<Server> getServerList() throws SQLException {
@@ -34,8 +35,8 @@ public class DBService {
 
                 int id = rs.getInt("ID");
                 String serverName = rs.getString("NAME");
-
-                Server server = new Server(id, serverName);
+                String description = rs.getString("DESCRIPTION");
+                Server server = new Server(id, serverName, description);
 
                 servers.add(server);
             }
@@ -61,6 +62,7 @@ public class DBService {
 
     /**
      * Retrieves a count of the number of rows in the server table
+     *
      * @return {int}    A count of servers
      * @throws SQLException
      */
@@ -97,6 +99,80 @@ public class DBService {
             return count;
         }
 
+    }
+
+
+    public long insertServer(Server server) throws SQLException {
+        String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) "
+                + "VALUES(?,?,?)";
+
+        long id = 0;
+
+        DBConnection dbConnection = new DBConnection();
+
+        Connection conn = dbConnection.createConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, server.id);
+            pstmt.setString(2, server.name);
+            pstmt.setString(3, server.description);
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    id = rs.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+
+
+            if (dbConnection != null) {
+                conn.close();
+            }
+            return id;
+        }
+    }
+
+
+    /**
+     * insert multiple Servers
+     */
+    public void insertServers(List<Server> list) {
+        String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) "
+                + "VALUES(?,?, ?)";
+
+        DBConnection dbConnection = new DBConnection();
+
+        Connection conn = dbConnection.createConnection();
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = conn.prepareStatement(SQL);
+            int count = 0;
+
+            for (Server server : list) {
+                statement.setInt(1, server.id);
+                statement.setString(2, server.name);
+                statement.setString(3, server.description);
+
+
+                statement.addBatch();
+                count++;
+                // execute every 100 rows or less
+                if (count % 100 == 0 || count == list.size()) {
+                    statement.executeBatch();
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
 

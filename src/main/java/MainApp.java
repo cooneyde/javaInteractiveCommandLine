@@ -1,6 +1,9 @@
 import dbService.DBService;
+import fileReader.FileReader;
 import model.Server;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.lang.*;
 import java.sql.*;
 import java.io.*;
@@ -8,7 +11,7 @@ import java.util.List;
 
 public class MainApp {
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, SAXException {
         boolean running = true;
 
         showHelp();
@@ -32,7 +35,33 @@ public class MainApp {
 
             } else if (option.equalsIgnoreCase("addServer")) {
 
-                // TODO implement...
+                System.out.println("Are you providing an xml file to add a server? (Y/N)");
+                option = reader.readLine();
+
+                if (option.equalsIgnoreCase("n")) {
+                    Server server = new Server();
+
+                    System.out.println("Enter an ID");
+                    server.id = Integer.parseInt(reader.readLine());
+
+                    System.out.println("Enter a name");
+                    server.name = reader.readLine();
+
+                    System.out.println("Enter a description");
+                    server.description = reader.readLine();
+
+                    System.out.println(dbService.insertServer(server));
+
+                } else if (option.equalsIgnoreCase("y")) {
+
+                    System.out.println("Provide the file path to the xml file (ensure keys in the xml are named id, name and description");
+                    String path = reader.readLine();
+                    FileReader fileReader = new FileReader();
+                    List<Server> serverList = null;
+                    serverList = fileReader.readServerFile(path);
+                    dbService.insertServers(serverList);
+
+                }
             } else if (option.equalsIgnoreCase("deleteServer")) {
                 // TODO implement...
             } else if (option.equalsIgnoreCase("editServer")) {
@@ -40,10 +69,13 @@ public class MainApp {
             } else if (option.equalsIgnoreCase("listServers")) {
 
                 List<Server> servers = dbService.getServerList();
-                for (Server item: servers) {
+                for (Server item : servers) {
                     System.out.println("________________________________");
                     System.out.println("ID: " + item.id);
                     System.out.println("Server Name: " + item.name);
+                    if(item.description != null && item.description.trim().length() != 0) {
+                        System.out.println("Description: " + item.description);
+                    }
                 }
 
             } else {
