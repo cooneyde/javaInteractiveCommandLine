@@ -1,17 +1,15 @@
 import dbService.DBService;
 import fileReader.FileReader;
 import model.Server;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.lang.*;
 import java.sql.*;
 import java.io.*;
 import java.util.List;
 
-public class MainApp {
+class MainApp {
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, SAXException {
+    public static void main(String[] args) throws SQLException, IOException {
         boolean running = true;
 
         showHelp();
@@ -40,7 +38,7 @@ public class MainApp {
 
                 if (option.equalsIgnoreCase("n")) {
                     Server server = gatherInputData(reader);
-                    System.out.println(dbService.insertServer(server));
+                    dbService.insertServer(server);
 
                 } else if (option.equalsIgnoreCase("y")) {
 
@@ -60,9 +58,8 @@ public class MainApp {
 
                 System.out.println("Please provide the id of the server you want to edit and values you want to update (empty values will be ignored)");
                 Server server = gatherInputData(reader);
+                dbService.updateServer(server);
 
-                System.out.println("do some other stuff");
-                // TODO implement...
             } else if (option.equalsIgnoreCase("listServers")) {
 
                 List<Server> servers = dbService.getServerList();

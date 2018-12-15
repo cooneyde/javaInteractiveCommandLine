@@ -14,7 +14,7 @@ public class DBConnection {
 
     public DBConnection() {
         this.url = "jdbc:mysql://localhost:3306/mysql?useSSL=false";
-        this.dbName = "dermotTest";
+        this.dbName = "mysql";
         this.driver = "com.mysql.cj.jdbc.Driver";
         this.userName = "root";
         this.password = "password";
@@ -23,7 +23,7 @@ public class DBConnection {
 
     /**
      * Creates a new database connection
-     * @return
+     * @return  Returns a connection object containing the connection to an SQL database instance
      */
     public Connection createConnection() {
 
