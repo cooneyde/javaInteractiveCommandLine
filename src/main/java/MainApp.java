@@ -39,17 +39,7 @@ public class MainApp {
                 option = reader.readLine();
 
                 if (option.equalsIgnoreCase("n")) {
-                    Server server = new Server();
-
-                    System.out.println("Enter an ID");
-                    server.id = Integer.parseInt(reader.readLine());
-
-                    System.out.println("Enter a name");
-                    server.name = reader.readLine();
-
-                    System.out.println("Enter a description");
-                    server.description = reader.readLine();
-
+                    Server server = gatherInputData(reader);
                     System.out.println(dbService.insertServer(server));
 
                 } else if (option.equalsIgnoreCase("y")) {
@@ -61,12 +51,17 @@ public class MainApp {
                     dbService.insertServers(serverList);
 
                 }
-            } else if (option.contains("deleteServer")) {
+            } else if (option.toLowerCase().contains("deleteserver")) {
 
                 String[] serverID = option.split(" ");  //split string by single space to obtain ID arg
                 dbService.deleteServer(serverID[1]);
 
             } else if (option.equalsIgnoreCase("editServer")) {
+
+                System.out.println("Please provide the id of the server you want to edit and values you want to update (empty values will be ignored)");
+                Server server = gatherInputData(reader);
+
+                System.out.println("do some other stuff");
                 // TODO implement...
             } else if (option.equalsIgnoreCase("listServers")) {
 
@@ -101,5 +96,21 @@ public class MainApp {
         System.out.println("editServer: to change the name of a server identified by id (takes 2 additional args - the id and the new name)");
         System.out.println("deleteServer: to delete a server (takes one more arg - the id of the server to delete, e.g. deleteServer 2)");
         System.out.println("listServers:  Display details of all servers");
+    }
+
+
+    private static Server gatherInputData(BufferedReader reader) throws IOException {
+        Server server = new Server();
+
+        System.out.println("Enter an ID");
+        server.id = Integer.parseInt(reader.readLine());
+
+        System.out.println("Enter a name");
+        server.name = reader.readLine();
+
+        System.out.println("Enter a description");
+        server.description = reader.readLine();
+
+        return server;
     }
 }
