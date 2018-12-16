@@ -176,7 +176,7 @@ public class DBService {
                 if (result.length == count && count != 0) {
                     System.out.println("All insertions successful");
                 } else {
-                    System.out.println(count - result.length + " Insertions failed");
+                    System.out.println("Some Insertions failed");
                 }
 
                 conn.close();
