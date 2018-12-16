@@ -259,7 +259,7 @@ public class DBService {
                 System.out.println(e);
             } finally {
 
-                if (result.length == count && count != 0) {
+                if (result.length == count) {
                     System.out.println("Update successful");
                 } else {
                     System.out.println(count - result.length + " updates failed");
