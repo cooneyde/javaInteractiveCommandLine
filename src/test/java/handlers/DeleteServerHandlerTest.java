@@ -74,4 +74,11 @@ public class DeleteServerHandlerTest {
         DeleteServerHandler.deleteServer(dbService, option);
         Assert.assertTrue(outContent.toString().contains("Deletion Successful"));
     }
+
+    @Test
+    public void deleteServerFailedWrongID() {
+        String option = "deleteServer 100";
+        DeleteServerHandler.deleteServer(dbService, option);
+        Assert.assertTrue(outContent.toString().contains("Deletion failed, unable to locate ID"));
+    }
 }
