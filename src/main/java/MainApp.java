@@ -1,4 +1,5 @@
 import dbService.DBService;
+import handlers.DeleteServerHandler;
 import handlers.ListServerHandler;
 import handlers.ServerCountHandler;
 import handlers.WriteServerHandler;
@@ -40,9 +41,7 @@ class MainApp {
 
             } else if (option.toLowerCase().contains("deleteserver")) {
 
-                String[] serverID = option.split(" ");  //split string by single space to obtain ID arg
-                dbService.deleteServer(serverID[1]);
-
+                DeleteServerHandler.deleteServer(dbService, option);
             } else if (option.equalsIgnoreCase("editServer")) {
                 WriteServerHandler.editServer(dbService, reader);
 
