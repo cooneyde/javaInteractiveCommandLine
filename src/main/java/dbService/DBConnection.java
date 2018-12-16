@@ -3,6 +3,7 @@ package dbService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.Properties;
 
 public class DBConnection {
@@ -24,7 +25,8 @@ public class DBConnection {
 
     /**
      * Creates a new database connection
-     * @return  Returns a connection object containing the connection to an SQL database instance
+     *
+     * @return Returns a connection object containing the connection to an SQL database instance
      */
     public Connection createConnection() {
 

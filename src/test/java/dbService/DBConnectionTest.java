@@ -14,6 +14,8 @@ public class DBConnectionTest {
 
     DBConnection dbConnection;
     Properties props;
+
+
     @Before
     public void setUp() throws Exception {
         props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
@@ -50,7 +52,6 @@ public class DBConnectionTest {
     }
 
 
-
     @Test
     public void testCreateConnection() {
 
@@ -58,5 +59,27 @@ public class DBConnectionTest {
         Assert.assertTrue(value instanceof Connection);
         Assert.assertNotNull(value);
     }
+
+    @Test
+    public void testExpectedFailCreateConnectionBadDriver() {
+        props.setProperty("driver", "not.a.driver");
+        dbConnection = new DBConnection(props);
+
+        Connection value = dbConnection.createConnection();
+        Assert.assertNull(value);
+
+        //reset properties file and db connection
+        props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
+        dbConnection = new DBConnection(props);
+    }
+
+   /* @Test
+    public void testExpectedFailCreateConnectionBadCredentials() {
+        props.setProperty("password", "notAPassword");
+        dbConnection = new DBConnection(props);
+
+        Connection value = dbConnection.createConnection();
+        Assert.assertNull(value);
+    }*/
 }
 

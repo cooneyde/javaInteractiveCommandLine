@@ -33,7 +33,14 @@ class MainApp {
                 running = false;
             } else if (option.equalsIgnoreCase("countServers")) {
 
-                System.out.println("Count of Servers: " + dbService.getServerCount());
+                int count = dbService.getServerCount();
+                if (count > -1) {
+                    System.out.println("Count of Servers: " + dbService.getServerCount());
+
+                } else {
+                    System.err.println("An error has occurred, a count of servers cannot be retrieved");
+
+                }
 
             } else if (option.equalsIgnoreCase("addServer")) {
 
@@ -51,7 +58,7 @@ class MainApp {
                     FileReader fileReader = new FileReader();
                     List<Server> serverList = fileReader.readServerFile(path);
 
-                    if(serverList.size() > 0) {
+                    if (serverList.size() > 0) {
                         dbService.insertServers(serverList);
 
                     }
@@ -71,14 +78,19 @@ class MainApp {
             } else if (option.equalsIgnoreCase("listServers")) {
 
                 List<Server> servers = dbService.getServerList();
-                for (Server item : servers) {
-                    System.out.println("________________________________");
-                    System.out.println("ID: " + item.id);
-                    System.out.println("Server Name: " + item.name);
-                    if(item.description != null && item.description.trim().length() != 0) {
-                        System.out.println("Description: " + item.description);
+                if (servers.size() > 0) {
+                    for (Server item : servers) {
+                        System.out.println("________________________________");
+                        System.out.println("ID: " + item.id);
+                        System.out.println("Server Name: " + item.name);
+                        if (item.description != null && item.description.trim().length() != 0) {
+                            System.out.println("Description: " + item.description);
+                        }
                     }
+                } else {
+                    System.out.println("List of servers is empty");
                 }
+
 
             } else {
                 System.out.printf("Your input of '%s' is not a valid input. Please enter one of the following: \n" +
