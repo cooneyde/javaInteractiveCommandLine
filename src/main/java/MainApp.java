@@ -1,5 +1,6 @@
 import dbService.DBService;
 import fileReader.FileReader;
+import handlers.ListServerHandler;
 import model.Server;
 import propertiesLoader.PropertiesLoader;
 
@@ -77,20 +78,7 @@ class MainApp {
 
             } else if (option.equalsIgnoreCase("listServers")) {
 
-                List<Server> servers = dbService.getServerList();
-                if (servers.size() > 0) {
-                    for (Server item : servers) {
-                        System.out.println("________________________________");
-                        System.out.println("ID: " + item.id);
-                        System.out.println("Server Name: " + item.name);
-                        if (item.description != null && item.description.trim().length() != 0) {
-                            System.out.println("Description: " + item.description);
-                        }
-                    }
-                } else {
-                    System.out.println("List of servers is empty");
-                }
-
+                ListServerHandler.listServers(dbService);
 
             } else {
                 System.out.printf("Your input of '%s' is not a valid input. Please enter one of the following: \n" +
