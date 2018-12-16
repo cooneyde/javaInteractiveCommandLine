@@ -10,7 +10,7 @@ import java.sql.*;
 import java.io.*;
 import java.util.Properties;
 
-class MainApp {
+public class MainApp {
 
     public static void main(String[] args) throws SQLException, IOException {
         boolean running = true;
