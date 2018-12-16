@@ -17,11 +17,11 @@ Once logged in to a local mysql from the root directory of this project, run the
 
 ### Building and running with maven
 
-Ensure src/resources/db.properties contains appropriate url and credentials for database authentication
+Ensure src/resources/db.properties contains appropriate url and credentials for database authentication.
 
 `mvn clean compile`
 
-`mvn exec:java -Dexec.mainClass="com.example.Main"`
+`mvn exec:java -Dexec.mainClass="MainApp"`
 
 ### Running the unit tests
 
@@ -32,3 +32,8 @@ Ensure src/resources/db.properties contains appropriate url and credentials for 
 `mvn clean package`
 
 `java -jar path/to/javaApp-1.0-jar-with-dependencies.jar`
+
+
+### Known Issues
+1. No pagination of the server lister
+1. table name is hardcoded in SQL queries (table name: TEST), this needs to be set by db.properties 
