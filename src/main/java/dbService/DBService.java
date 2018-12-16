@@ -29,31 +29,33 @@ public class DBService {
         Connection conn = dbConnection.createConnection();
         String selectTableSQL = "SELECT * FROM test";
 
-        try {
-            statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(selectTableSQL);
+        if (conn != null) {
+            try {
+                statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery(selectTableSQL);
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                int id = rs.getInt("ID");
-                String serverName = rs.getString("NAME");
-                String description = rs.getString("DESCRIPTION");
-                Server server = new Server(id, serverName, description);
+                    int id = rs.getInt("ID");
+                    String serverName = rs.getString("NAME");
+                    String description = rs.getString("DESCRIPTION");
+                    Server server = new Server(id, serverName, description);
 
-                servers.add(server);
+                    servers.add(server);
+                }
+                rs.close();
+
+            } catch (SQLException e) {
+
+                System.out.println(e.getMessage());
+
+            } finally {
+
+                if (statement != null) {
+                    statement.close();
+                }
+                conn.close();
             }
-            rs.close();
-
-        } catch (SQLException e) {
-
-            System.out.println(e.getMessage());
-
-        } finally {
-
-            if (statement != null) {
-                statement.close();
-            }
-            conn.close();
         }
         return servers;
     }
@@ -72,68 +74,75 @@ public class DBService {
         Connection conn = dbConnection.createConnection();
         String selectTableSQL = "SELECT COUNT(1) FROM test";
 
-        try {
-            statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(selectTableSQL);
+        if (conn != null) {
+            try {
+                statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery(selectTableSQL);
 
-            count = rs.last() ? rs.getInt(1) : 0;
-            rs.close();
+                count = rs.last() ? rs.getInt(1) : 0;
+                rs.close();
 
-        } catch (SQLException e) {
+            } catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
 
-        } finally {
+            } finally {
 
-            if (statement != null) {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
+                conn.close();
             }
-            conn.close();
         }
+
         return count;
     }
 
 
     /**
      * Inserts a new Server into the server table
-     * @param server        {Server} Server object containing ID and either or both name and description
+     *
+     * @param server {Server} Server object containing ID and either or both name and description
      * @throws SQLException Thrown when a connection cannot be closed
      */
     public void insertServer(Server server) throws SQLException {
         String SQL = "INSERT INTO test(ID,NAME,DESCRIPTION) VALUES(?,?,?)";
-
-        int result = 0;
-
         Connection conn = dbConnection.createConnection();
         PreparedStatement statement;
-        try {
-            statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, server.id);
-            statement.setString(2, server.name);
-            statement.setString(3, server.description);
+        int result = 0;
 
-            result = statement.executeUpdate();
+        if (conn != null) {
+            try {
+                statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+                statement.setInt(1, server.id);
+                statement.setString(2, server.name);
+                statement.setString(3, server.description);
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                result = statement.executeUpdate();
 
-        } finally {
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
 
-            if (result > 0) {
-                System.out.println("Insert successful");
-            } else {
-                System.out.println("Insert failed");
+            } finally {
+
+                if (result > 0) {
+                    System.out.println("Insert successful");
+                } else {
+                    System.out.println("Insert failed");
+                }
+
+                conn.close();
+
             }
-
-            conn.close();
-
         }
+
     }
 
 
     /**
      * insert multiple Servers
-     * @param list            {List<Server>}    A list of Server objects
+     *
+     * @param list {List<Server>}    A list of Server objects
      * @throws SQLException Thrown when a connection cannot be closed
      */
     public void insertServers(List<Server> list) throws SQLException {
@@ -145,32 +154,35 @@ public class DBService {
         int count = 0;
         int[] result = new int[0];
 
-        try {
+        if (conn != null) {
+            try {
 
-            statement = conn.prepareStatement(SQL);
+                statement = conn.prepareStatement(SQL);
 
-            for (Server server : list) {
-                statement.setInt(1, server.id);
-                statement.setString(2, server.name);
-                statement.setString(3, server.description);
+                for (Server server : list) {
+                    statement.setInt(1, server.id);
+                    statement.setString(2, server.name);
+                    statement.setString(3, server.description);
 
-                statement.addBatch();
-                count++;
+                    statement.addBatch();
+                    count++;
+                }
+                result = statement.executeBatch();
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+
+                if (result.length == count && count != 0) {
+                    System.out.println("All insertions successful");
+                } else {
+                    System.out.println(count - result.length + " Insertions failed");
+                }
+
+                conn.close();
             }
-            result = statement.executeBatch();
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } finally {
-
-            if (result.length == count) {
-                System.out.println("All insertions successful");
-            } else {
-                System.out.println(count - result.length + " Insertions failed");
-            }
-
-            conn.close();
         }
+
     }
 
 
@@ -182,37 +194,38 @@ public class DBService {
     public void deleteServer(String id) throws SQLException {
 
         String sql = "DELETE FROM test WHERE id = ?";
-
-        Connection conn = dbConnection.createConnection();
         PreparedStatement statement;
+        Connection conn = dbConnection.createConnection();
         int result = 0;
 
-        try {
+        if (conn != null) {
+            try {
 
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, id);
-            result = statement.executeUpdate();
+                statement = conn.prepareStatement(sql);
+                statement.setString(1, id);
+                result = statement.executeUpdate();
 
 
-        } catch (SQLException e) {
-            System.out.println(e);
-        } finally {
-            if (result > 0) {
-                System.out.println("Deletion Successful");
+            } catch (SQLException e) {
+                System.out.println(e);
+            } finally {
+                if (result > 0) {
+                    System.out.println("Deletion Successful");
 
-            } else {
-                System.out.println("Deletion failed");
+                } else {
+                    System.out.println("Deletion failed");
+                }
+                conn.close();
             }
-
-
-            conn.close();
         }
+
     }
 
 
     /**
      * Updates an existing server row with new data
-     * @param server           {Server} Object containing id of the server, and name/description (or both)
+     *
+     * @param server {Server} Object containing id of the server, and name/description (or both)
      * @throws SQLException
      */
     public void updateServer(Server server) throws SQLException {
@@ -222,37 +235,40 @@ public class DBService {
         int count = 0;
         int[] result = new int[0];
 
-        try {
+        if (conn != null) {
+            try {
 
-            statement = conn.createStatement();
-            if (server.name.trim().length() != 0) {
-                String sql = "UPDATE test SET NAME='" + server.name + "' WHERE ID=" + server.id;
+                statement = conn.createStatement();
+                if (server.name.trim().length() != 0) {
+                    String sql = "UPDATE test SET NAME='" + server.name + "' WHERE ID=" + server.id;
 
-                statement.addBatch(sql);
-                count++;
+                    statement.addBatch(sql);
+                    count++;
 
+                }
+                if (server.description.trim().length() != 0) {
+                    String sql = "UPDATE test SET DESCRIPTION='" + server.description + "' WHERE ID=" + server.id;
+                    statement.addBatch(sql);
+                    count++;
+
+                }
+                result = statement.executeBatch();
+
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            } finally {
+
+                if (result.length == count && count != 0) {
+                    System.out.println("Update successful");
+                } else {
+                    System.out.println(count - result.length + " updates failed");
+
+                }
+                conn.close();
             }
-            if (server.description.trim().length() != 0) {
-                String sql = "UPDATE test SET DESCRIPTION='" + server.description + "' WHERE ID=" + server.id;
-                statement.addBatch(sql);
-                count++;
-
-            }
-            result = statement.executeBatch();
-
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        } finally {
-
-            if (result.length == count) {
-                System.out.println("Update successful");
-            } else {
-                System.out.println(count - result.length + " updates failed");
-
-            }
-            conn.close();
         }
+
     }
 }
 

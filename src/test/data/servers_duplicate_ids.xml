@@ -1,0 +1,13 @@
+<servers>
+    <server>
+        <id>1</id>
+        <name>duplicate myservername</name>
+        <description>duplicate This is a few words about the server</description>
+    </server>
+
+    <server>
+        <id>2</id>
+        <name>duplicate myservername2</name>
+        <description>duplicate This is a few words about the server2</description>
+    </server>
+</servers>
