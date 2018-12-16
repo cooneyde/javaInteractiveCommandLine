@@ -6,13 +6,12 @@ import handlers.WriteServerHandler;
 import propertiesLoader.PropertiesLoader;
 
 import java.lang.*;
-import java.sql.*;
 import java.io.*;
 import java.util.Properties;
 
-class MainApp {
+public class MainApp {
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws IOException {
         boolean running = true;
 
         showHelp();
