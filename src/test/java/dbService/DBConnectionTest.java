@@ -55,7 +55,6 @@ public class DBConnectionTest {
     @Test
     public void testCreateConnection() {
 
-
         Connection value = dbConnection.createConnection();
         Assert.assertTrue(value instanceof Connection);
         Assert.assertNotNull(value);
