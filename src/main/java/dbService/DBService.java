@@ -68,16 +68,16 @@ public class DBService {
      * @throws SQLException SQL exception in the event that connection cannot be closed
      */
     public int getServerCount() throws SQLException {
-        Statement statement = null;
+        PreparedStatement statement = null;
         int count = -1;
 
         Connection conn = dbConnection.createConnection();
-        String selectTableSQL = "SELECT COUNT(1) FROM test";
+        String sql = "SELECT COUNT(1) FROM test";
 
         if (conn != null) {
             try {
-                statement = conn.createStatement();
-                ResultSet rs = statement.executeQuery(selectTableSQL);
+                statement = conn.prepareStatement(sql);
+                ResultSet rs = statement.executeQuery();
 
                 count = rs.last() ? rs.getInt(1) : 0;
                 rs.close();

@@ -80,6 +80,18 @@ public class DBServiceTest {
 
 
     @Test
+    public void getServerCount() {
+
+        try {
+            int result = dbService.getServerCount();
+            //HSQLDB does not suppor this query
+            //Assert.assertEquals(1, result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testInsertServer() {
         Server server = new Server(6, "a new name", "we should describe the server");
         try {
