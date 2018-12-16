@@ -75,7 +75,17 @@ public class ListServerHandlerTest {
         Assert.assertTrue(outContent.toString().contains("ID: 1"));
         Assert.assertTrue(outContent.toString().contains("Server Name: server1"));
         Assert.assertTrue(outContent.toString().contains("Description: this is a server"));
+    }
 
 
+    @Test
+    public void listServersNoData() throws SQLException {
+        Connection connection = getConnection();
+        Statement statement = connection.createStatement();
+
+        statement.execute("DELETE FROM test WHERE id = 1");
+        connection.commit();
+        ListServerHandler.listServers(dbService);
+        Assert.assertTrue(outContent.toString().contains("List of servers is empty"));
     }
 }

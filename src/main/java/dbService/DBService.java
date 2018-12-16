@@ -213,7 +213,7 @@ public class DBService {
                     System.out.println("Deletion Successful");
 
                 } else {
-                    System.out.println("Deletion failed");
+                    System.out.println("Deletion failed, unable to locate ID");
                 }
                 conn.close();
             }
