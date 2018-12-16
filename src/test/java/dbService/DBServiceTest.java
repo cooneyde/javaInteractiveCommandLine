@@ -14,8 +14,8 @@ import java.util.Properties;
 
 public class DBServiceTest {
 
-    Properties props;
-    DBService dbService;
+    private Properties props;
+    private DBService dbService;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -58,7 +58,7 @@ public class DBServiceTest {
      * Create a connection
      *
      * @return connection object
-     * @throws SQLException
+     * @throws SQLException Throws an exception if connection to db fails
      */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(props.getProperty("url"), props.getProperty("userName"), props.getProperty("password"));
@@ -71,21 +71,8 @@ public class DBServiceTest {
 
         try {
             List<Server> result = dbService.getServerList();
-            Assert.assertTrue(result instanceof List);
             Assert.assertEquals(3, result.size());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Test
-    public void getServerCount() {
-
-        try {
-            int result = dbService.getServerCount();
-            //assertEquals(result, 1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -175,8 +162,8 @@ public class DBServiceTest {
 
         Server deletedServer = getServerItem(server.id);
         Assert.assertEquals(0, deletedServer.id);
-        Assert.assertEquals(null, deletedServer.name);
-        Assert.assertEquals(null, deletedServer.description);
+        Assert.assertNull(deletedServer.name);
+        Assert.assertNull(deletedServer.description);
 
     }
 
@@ -184,7 +171,6 @@ public class DBServiceTest {
     @Test
     public void testExpectedFailDeleteServerInvalidID() throws SQLException {
         dbService.deleteServer("15665");
-        Server server = new Server(15665, "server1", "this is a server");
 
         Assert.assertTrue( outContent.toString().contains("Deletion failed"));
     }

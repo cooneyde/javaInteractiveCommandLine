@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ServerCountHandler {
 
     public static void countServers(DBService dbService) {
-        int count = -1;
+        int count;
         try {
             count = dbService.getServerCount();
 

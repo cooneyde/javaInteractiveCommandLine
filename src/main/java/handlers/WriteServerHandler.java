@@ -14,8 +14,8 @@ public class WriteServerHandler {
 
     /**
      * Add a new server by manual input or by xml file (xml file supports adding 1 or many servers)
-     * @param dbService
-     * @param reader
+     * @param dbService Contains the DBService Object
+     * @param reader    Contains the reader object which is consuming input from the console
      */
     public static void addNewServer(DBService dbService, BufferedReader reader) {
 
@@ -50,8 +50,8 @@ public class WriteServerHandler {
 
     /**
      * Edits an existing server in the database with a provided manual input
-     * @param dbService
-     * @param reader
+     * @param dbService Contains the DBService Object
+     * @param reader    Contains the reader object which is consuming input from the console
      */
     public static void editServer(DBService dbService, BufferedReader reader) {
 
@@ -69,8 +69,8 @@ public class WriteServerHandler {
 
     /**
      * Gathers data for manual input of server data
-     * @param reader
-     * @return
+     * @param reader    Contains the reader object which is consuming input from the console
+     * @return  {Server}    Server Object containing id, name and description of a server
      * @throws IOException
      */
     private static Server gatherInputData(BufferedReader reader) throws IOException {

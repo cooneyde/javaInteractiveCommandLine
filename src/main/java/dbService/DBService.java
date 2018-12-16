@@ -9,7 +9,7 @@ import model.Server;
 
 public class DBService {
 
-    private DBConnection dbConnection;
+    private final DBConnection dbConnection;
 
     public DBService(Properties props) {
 
@@ -207,7 +207,7 @@ public class DBService {
 
 
             } catch (SQLException e) {
-                System.out.println(e);
+                e.printStackTrace();
             } finally {
                 if (result > 0) {
                     System.out.println("Deletion Successful");
@@ -226,7 +226,7 @@ public class DBService {
      * Updates an existing server row with new data
      *
      * @param server {Server} Object containing id of the server, and name/description (or both)
-     * @throws SQLException
+     * @throws SQLException Throws an exception if connection fails to close (unlikely)
      */
     public void updateServer(Server server) throws SQLException {
 
@@ -256,7 +256,7 @@ public class DBService {
 
 
             } catch (SQLException e) {
-                System.out.println(e);
+                e.printStackTrace();
             } finally {
 
                 if (result.length == count) {

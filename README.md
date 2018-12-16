@@ -9,8 +9,15 @@
 1. Java 8
 1. MySQL version 8.0.12 https://www.mysql.com/downloads/
 
+### Loading a database from file  for local mysql server
+
+Once logged in to a local mysql from the root directory of this project, run the following command (ensure a database called mysql, if not the db.properties file in this project should be updated)
+
+`use mysql source dbbackup.sql`
 
 ### Building and running with maven
+
+Ensure src/resources/db.properties contains appropriate url and credentials for database authentication
 
 `mvn clean compile`
 

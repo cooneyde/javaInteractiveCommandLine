@@ -42,9 +42,8 @@ public class FileReaderTest {
     @Test (expected = SAXParseException.class)
     public void testValidationXmlFile() throws IOException, SAXException {
 
-        FileReader fileReader = new FileReader();
         File xmlFile = new File("src/test/data/server_bad_data.xml");
         InputStream targetStream = new FileInputStream(new File("server.xsd"));
-        fileReader.validate(xmlFile, targetStream);
+        FileReader.validate(xmlFile, targetStream);
     }
 }

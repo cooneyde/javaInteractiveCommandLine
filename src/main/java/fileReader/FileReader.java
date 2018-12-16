@@ -61,7 +61,7 @@ public class FileReader {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return serverList;
     }

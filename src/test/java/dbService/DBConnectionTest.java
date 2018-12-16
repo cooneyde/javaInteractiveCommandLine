@@ -12,8 +12,8 @@ import java.util.Properties;
 
 public class DBConnectionTest {
 
-    DBConnection dbConnection;
-    Properties props;
+   private  DBConnection dbConnection;
+   private  Properties props;
 
 
     @Before
@@ -45,7 +45,7 @@ public class DBConnectionTest {
      * Create a connection
      *
      * @return connection object
-     * @throws SQLException
+     * @throws SQLException Throws an exception if connection to db fails
      */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(props.getProperty("url"), props.getProperty("userName"), props.getProperty("password"));
@@ -56,7 +56,6 @@ public class DBConnectionTest {
     public void testCreateConnection() {
 
         Connection value = dbConnection.createConnection();
-        Assert.assertTrue(value instanceof Connection);
         Assert.assertNotNull(value);
     }
 
@@ -68,18 +67,7 @@ public class DBConnectionTest {
         Connection value = dbConnection.createConnection();
         Assert.assertNull(value);
 
-        //reset properties file and db connection
-        props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
-        dbConnection = new DBConnection(props);
     }
 
-   /* @Test
-    public void testExpectedFailCreateConnectionBadCredentials() {
-        props.setProperty("password", "notAPassword");
-        dbConnection = new DBConnection(props);
-
-        Connection value = dbConnection.createConnection();
-        Assert.assertNull(value);
-    }*/
 }
 

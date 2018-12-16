@@ -3,15 +3,14 @@ package dbService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.Properties;
 
-public class DBConnection {
+class DBConnection {
 
-    private String url;
-    private String driver;
-    private String userName;
-    private String password;
+    private final String url;
+    private final String driver;
+    private final String userName;
+    private final String password;
 
 
     public DBConnection(Properties prop) {

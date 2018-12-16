@@ -7,14 +7,14 @@ import java.util.Properties;
 public class PropertiesLoader {
 
 
-    Properties prop = new Properties();
+    private final Properties prop = new Properties();
 
     public PropertiesLoader(String path) {
         try {
             FileInputStream fileInputStream = new FileInputStream(path);
             prop.load(fileInputStream);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

@@ -9,7 +9,7 @@ import java.lang.*;
 import java.io.*;
 import java.util.Properties;
 
-public class MainApp {
+class MainApp {
 
     public static void main(String[] args) throws IOException {
         boolean running = true;

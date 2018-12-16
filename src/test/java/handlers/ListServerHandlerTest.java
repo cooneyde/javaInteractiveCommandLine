@@ -15,12 +15,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
-
 public class ListServerHandlerTest {
 
-    Properties props;
-    DBService dbService;
+    private Properties props;
+    private DBService dbService;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -61,7 +59,7 @@ public class ListServerHandlerTest {
      * Create a connection
      *
      * @return connection object
-     * @throws SQLException
+     * @throws SQLException Throws an exception if connection to db fails
      */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(props.getProperty("url"), props.getProperty("userName"), props.getProperty("password"));
