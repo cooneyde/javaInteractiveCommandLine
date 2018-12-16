@@ -36,4 +36,4 @@ Ensure src/resources/db.properties contains appropriate url and credentials for 
 
 ### Known Issues
 1. No pagination of the server lister
-1. table name is hardcoded in SQL queries (table name: TEST), this needs to be set by db.properties 
+1. table name is hardcoded in SQL queries (table name: TEST), this should be set by db.properties 
