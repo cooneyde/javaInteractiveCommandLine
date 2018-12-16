@@ -8,6 +8,7 @@ public class PropertiesLoader {
 
 
     Properties prop = new Properties();
+
     public PropertiesLoader(String path) {
         try {
             FileInputStream fileInputStream = new FileInputStream(path);
@@ -18,6 +19,7 @@ public class PropertiesLoader {
     }
 
     public Properties getProperties() {
+
         return prop;
     }
 }
