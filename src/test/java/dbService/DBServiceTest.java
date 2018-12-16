@@ -12,12 +12,13 @@ import java.util.Properties;
 
 public class DBServiceTest {
 
-    Properties props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
-    DBService dbService = new DBService(props);
-
+    Properties props;
+    DBService dbService;
 
     @Before
     public void setUp() throws Exception {
+        props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
+        dbService = new DBService(props);
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 
