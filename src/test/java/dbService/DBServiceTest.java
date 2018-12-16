@@ -5,6 +5,8 @@ import model.Server;
 import org.junit.*;
 import propertiesLoader.PropertiesLoader;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.sql.*;
 import java.util.List;
 import java.util.Properties;
@@ -15,8 +17,17 @@ public class DBServiceTest {
     Properties props;
     DBService dbService;
 
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
+
     @Before
     public void setUp() throws Exception {
+
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+
         props = new PropertiesLoader("src/main/resources/testDB.properties").getProperties();
         dbService = new DBService(props);
         Connection connection = getConnection();
@@ -36,6 +47,9 @@ public class DBServiceTest {
         Statement statement = connection.createStatement();
         statement.executeUpdate("DROP TABLE test");
         connection.commit();
+
+        System.setOut(originalOut);
+        System.setErr(originalErr);
 
     }
 
@@ -83,11 +97,30 @@ public class DBServiceTest {
         Server server = new Server(6, "a new name", "we should describe the server");
         try {
             dbService.insertServer(server);
+            Assert.assertTrue( outContent.toString().contains("Insert successful"));
+
 
             Server server1 = getServerItem(server.id);
             Assert.assertEquals(server1.id, server.id);
             Assert.assertEquals(server1.description, server.description);
             Assert.assertEquals(server1.name, server.name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testFailedInsertServerDuplicateID() {
+        Server server = new Server(1, "a new name", "we should describe the server");
+        try {
+            dbService.insertServer(server);
+
+            Assert.assertTrue( outContent.toString().contains("Insert failed"));
+
+            Server server1 = getServerItem(server.id);
+            Assert.assertNotEquals(server1.description, server.description);
+            Assert.assertNotEquals(server1.name, server.name);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,6 +150,25 @@ public class DBServiceTest {
 
 
     @Test
+    public void testExpectedFailInsertServersDuplicateIDs() throws SQLException {
+        FileReader fileReader = new FileReader();
+        List<Server> serverList = fileReader.readServerFile("src/test/data/servers_duplicate_ids.xml");
+        dbService.insertServers(serverList);
+
+        Server server1 = new Server(1, "duplicate myservername2", "duplicate This is a few words about the server2");
+        Server server2 = new Server(2, "duplicate myservername", "duplicate This is a few words about the server");
+
+        Server server1Inserted = getServerItem(server1.id);
+        Assert.assertNotEquals(server1Inserted.description, server1.description);
+        Assert.assertNotEquals(server1Inserted.name, server1.name);
+
+        Server server2Inserted = getServerItem(server2.id);
+        Assert.assertNotEquals(server2Inserted.description, server2.description);
+        Assert.assertNotEquals(server2Inserted.name, server2.name);
+    }
+
+
+    @Test
     public void testDeleteServer() throws SQLException {
         dbService.deleteServer("1");
         Server server = new Server(1, "server1", "this is a server");
@@ -126,6 +178,15 @@ public class DBServiceTest {
         Assert.assertEquals(null, deletedServer.name);
         Assert.assertEquals(null, deletedServer.description);
 
+    }
+
+
+    @Test
+    public void testExpectedFailDeleteServerInvalidID() throws SQLException {
+        dbService.deleteServer("15665");
+        Server server = new Server(15665, "server1", "this is a server");
+
+        Assert.assertTrue( outContent.toString().contains("Deletion failed"));
     }
 
 

@@ -50,7 +50,11 @@ class MainApp {
                     String path = reader.readLine();
                     FileReader fileReader = new FileReader();
                     List<Server> serverList = fileReader.readServerFile(path);
-                    dbService.insertServers(serverList);
+
+                    if(serverList.size() > 0) {
+                        dbService.insertServers(serverList);
+
+                    }
 
                 }
             } else if (option.toLowerCase().contains("deleteserver")) {
